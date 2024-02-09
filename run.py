@@ -24,7 +24,10 @@ SHEET = GSPREAD_CLIENT.open('atm_python')
 # print(users)
 
 def clear():
-    """clear function on windows or linux/mac"""
+    """This function will clear the terminal screen based on the operating system. 
+       It checks the operating system and then executes the appropriate command
+       (cls for Windows and clear for Linux/Mac) using os.system()."""
+
     if os.name == 'nt':
         os.system('cls')
     else:
@@ -42,4 +45,21 @@ def welcome_message():
     print("[green]==================================================[/]")
     time.sleep(0.2)
 
+def display_menu():
+    """ Print options to the user """
+    print("\n      [green]**__[/] [bright_magenta]MENU[/] [green]__**[/]")
+    time.sleep(0.2)
+    print("\n      [green]1. BALANCE[/]")
+    time.sleep(0.2)
+    print("      [yellow]2. DEPOSIT[/]")
+    time.sleep(0.2)
+    print("      [blue]3. WITHDRAW[/]")
+    time.sleep(0.2)
+    print("      [red]4. EXIT[/]")
+    time.sleep(0.2)
+    print()
+    print("[green]==================================================[/]")
+    time.sleep(0.2)
+
 welcome_message()
+display_menu()

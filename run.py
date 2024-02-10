@@ -88,3 +88,7 @@ def withdraw(userData):
     except:
         print("         [red]Invalid input[/]")
 
+
+def check_balance():
+    print ("[green]Your current balance is: ", userData.get_balance())
+

@@ -61,5 +61,30 @@ def display_menu():
     print("[green]==================================================[/]")
     time.sleep(0.2)
 
-welcome_message()
-display_menu()
+def deposit(userData):
+    """ Get deposit as an input from the user """
+    try:
+        deposit = float(input("[yellow]How much money would you like to deposit?[/]"))
+        userData.set_balance(userData.get_balance() + deposit)
+        balance = str(userData.get_balance())
+        print(f"\n [green] Thank you for your deposit. Your new balance is: {balance}[/]")
+    
+    except:
+        print("    [red]Invalid input[/]")
+
+
+def withdraw(userData):
+    """ Get withdraw as an input from the user """
+    try:
+        withdraw = float(input ("[blue]How much money would you like to withdraw[/]"))
+       #Check if user has enaugh balance
+        if(userData.get_balance() < withdraw):
+            print ("     [red]Sorry! There is not enough balance[/]")
+            
+        else:
+            userData.set_balance(userData.get_balance() - withdraw)
+            print("      [green]Your withdraw was completed!![/]")
+    
+    except:
+        print("         [red]Invalid input[/]")
+

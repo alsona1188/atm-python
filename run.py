@@ -5,6 +5,7 @@ from rich import print
 import time
 import datetime
 import os
+import sys
 
 # This code is taken from Love Sandwiches Project
 
@@ -19,8 +20,8 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('atm_python')
 
-# user_data = SHEET.worksheet('data-user')
-# users = user_data.get_all_values()
+user_data = SHEET.worksheet('data-user')
+users = user_data.get_all_values()
 # print(users)
 
 def clear():
@@ -61,34 +62,42 @@ def display_menu():
     print("[green]==================================================[/]")
     time.sleep(0.2)
 
-def deposit(userData):
-    """ Get deposit as an input from the user """
+def validate_card(userData):
+    """ 
+    Checking if the card number belongs to the list of card numbers that we 
+    have on spreadsheet.
+    """
     try:
-        deposit = float(input("[yellow]How much money would you like to deposit?[/]"))
-        userData.set_balance(userData.get_balance() + deposit)
-        balance = str(userData.get_balance())
-        print(f"\n [green] Thank you for your deposit. Your new balance is: {balance}[/]")
+        cardNumber = int(input("\n Please insert your card number:  "))
+        list_of_cardNumbers = user_data.col_values(3)
+        list_of_cardNumbers.pop(0)
+        list_of_cardNumbers = [int(x) for x in list_of_cardNumbers]
+        if cardNumber in list_of_cardNumbers:
+            print('\n      [green]Your card number is correct!!![/]')
+            return str(cardNumber)
+    except ValueError:
+        print('   [cyan]Please enter numbers for your account number![/]')
+    print("       [red]Your account number doesn't exist![/]")
+    return False
+
+def validate_pin(userData, cardNumber):
+    """" 
+    Verifying if the pin entered by the user is 
+    corresponding to our spreadsheet and also 
+    to the card number that the user entered
+    """
+    cardNumber_row = user_data.find(cardNumber).row
+    cardNumber_col = user_data.find(cardNumber).col
+    user_pin = user_data.cell(cardNumber_row, cardNumber_col+1).value
+    inserted_pin = int(input("\n Please insert your Pin:  "))
     
-    except:
-        print("    [red]Invalid input[/]")
+              
+def main():
 
-
-def withdraw(userData):
-    """ Get withdraw as an input from the user """
-    try:
-        withdraw = float(input ("[blue]How much money would you like to withdraw[/]"))
-       #Check if user has enaugh balance
-        if(userData.get_balance() < withdraw):
-            print ("     [red]Sorry! There is not enough balance[/]")
-            
-        else:
-            userData.set_balance(userData.get_balance() - withdraw)
-            print("      [green]Your withdraw was completed!![/]")
+    welcome_message()
+    display_menu()
+    validate_card(userData)
     
-    except:
-        print("         [red]Invalid input[/]")
-
-
-def check_balance():
-    print ("[green]Your current balance is: ", userData.get_balance())
-
+if __name__ == '__main__':
+    main()
+ 

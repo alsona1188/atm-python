@@ -20,11 +20,10 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('atm_python')
 
-#user_data = SHEET.worksheet('data-user')
+user_data = SHEET.worksheet('data-user')
+#Prints a list of users by row
+list_of_users = user_data.get_all_values()[1:]
 
-# Prints a list of users by row
-#list_of_users = user_data.get_all_values()[1:]
-# print(users)
 
 def clear():
     """This function will clear the terminal screen based on the operating system. 
@@ -70,7 +69,6 @@ def validate_card():
     Validating the card inserted by the user. If it is correct will break
     otherwise it will continue to ask for card number.
     """
-    list_of_users = SHEET.worksheet("data-user").get_all_values()[1:]
     while True:
         inserted_card = input("\n Please insert your CARD:  ")
         if not inserted_card:
@@ -85,16 +83,55 @@ def validate_card():
             break
         else:
             print("\n [red] Your card number doesn't exist![/]")
-
-def validate_pin(userData):
+    return userData(user[0][0], user[0][1], user[0][2], user[0][3], user[0][4])
     
+def validate_pin(userData):
+
+    """- Validating the pin entered by the user
+       - There is a limit of 3 attempts 
+       """
+    user = [
+        holder_card
+        for holder_card in list_of_users
+        if userData.get_cardNumber() == holder_card[2]
+    ]
+    
+    attempts = 0
+    while attempts < 3:
+        attempts += 1
+        inserted_pin = input("\nPlease enter PIN:")
+        if not inserted_pin:
+            print("\n    [cyan]Please enter PIN, try again.[/]\n")
+            status = False
+
+        elif not inserted_pin.isnumeric():
+            print("\n  [cyan]Only numbers allowed. Insert your card and try again.[/]\n")
+            status = False
+            sys.exit()
+
+        elif inserted_pin.isnumeric() and inserted_pin == user[0][3]:
+            print("\n    [green]Correct PIN! Access allowed!![/][\n]")
+            status = True
+            break
+
+        elif attempts == 3:
+            print("\n    [red]Sorry you've exceeded you trial limit[/]\n")
+            status = False
+            sys.exit()
+
+        else:
+            print("\n    [red]Incorrect PIN, try again.[/]\n")
+            status = False
+    return status
 
 
 
 def main():
     welcome_message()
     display_menu()
-    validate_card()
+    current_user = validate_card()
+    validate_pin(current_user)
+    
     
 
 main()

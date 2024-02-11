@@ -99,7 +99,7 @@ def validate_pin(userData):
     attempts = 0
     while attempts < 3:
         attempts += 1
-        inserted_pin = input("\nPlease enter PIN:")
+        inserted_pin = input("\nPlease enter PIN:  \n")
         if not inserted_pin:
             print("\n    [cyan]Please enter PIN, try again.[/]\n")
             status = False
@@ -110,7 +110,7 @@ def validate_pin(userData):
             sys.exit()
 
         elif inserted_pin.isnumeric() and inserted_pin == user[0][3]:
-            print("\n    [green]Correct PIN! Access allowed!![/][\n]")
+            print("\n    [green]Correct PIN! Access allowed!![/]\n")
             status = True
             break
 

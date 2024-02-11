@@ -2,10 +2,10 @@ class userData ():
     """
     userData class contains 5 attributes
     """
-    def __init__(self, firstname, lastname, cardNumber, pin, balance):
+    def __init__(self, firstname, lastname, card_number, pin, balance):
         self.firstname = firstname
         self.lastname = lastname
-        self.cardNumber = cardNumber
+        self.card_number = card_number
         self.pin = pin
         self.balance = balance
 
@@ -16,7 +16,7 @@ def print_user_data(self):
     print("**-------------------------------------------------**")
     print("Firstname: ", self.firstname)
     print("Lastname: ", self.lastname)
-    print("Card number: ", self.cardNumber)
+    print("Card number: ", self.card_number)
     print("Pin: ", self.pin)
     print("Balance: ", self.balance)
 

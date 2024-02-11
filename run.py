@@ -68,36 +68,54 @@ def validate_card(userData):
     have on spreadsheet.
     """
     try:
-        cardNumber = int(input("\n Please insert your card number:  "))
+        card_number = int(input("\n Please insert your card number:  "))
         list_of_cardNumbers = user_data.col_values(3)
         list_of_cardNumbers.pop(0)
         list_of_cardNumbers = [int(x) for x in list_of_cardNumbers]
-        if cardNumber in list_of_cardNumbers:
+        if card_number in list_of_cardNumbers:
+
             print('\n      [green]Your card number is correct!!![/]')
-            return str(cardNumber)
+
+            return str(card_number)
+
     except ValueError:
         print('   [cyan]Please enter numbers for your account number![/]')
     print("       [red]Your account number doesn't exist![/]")
     return False
 
-def validate_pin(userData, cardNumber):
+def validate_pin(userData, card_number):
     """" 
     Verifying if the pin entered by the user is 
     corresponding to our spreadsheet and also 
     to the card number that the user entered
     """
-    cardNumber_row = user_data.find(cardNumber).row
-    cardNumber_col = user_data.find(cardNumber).col
-    user_pin = user_data.cell(cardNumber_row, cardNumber_col+1).value
-    inserted_pin = int(input("\n Please insert your Pin:  "))
+    card_number_row = user_data.find(card_number).row
+    card_number_col = user_data.find(card_number).col
+    user_pin = user_data.cell(card_number_row, card_number_col+1).value
     
-              
+    attempts_left = 3
+    while attempts_left > 0:
+        inserted_pin = int(input("\n Please insert your PIN:  "))
+
+        if user_pin == inserted_pin:
+            print("Your PIN is correct!")
+            return True
+        else:
+            attempts_left -= 1
+            print(f"Incorrect PIN! {attempts_left} attempts left.")
+            if attempts_left == 0:
+                print("Your account has been blocked! Please contact us.")
+                return False
+
+    
+    
 def main():
 
     welcome_message()
     display_menu()
     validate_card(userData)
+   
     
+
 if __name__ == '__main__':
     main()
- 

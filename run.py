@@ -57,9 +57,9 @@ def display_menu():
     time.sleep(0.2)
     print("      [blue]3. WITHDRAW[/]")
     time.sleep(0.2)
-    print("      [bright_magenta]3. Change PIN[/]")
+    print("      [bright_magenta]4. Change PIN[/]")
     time.sleep(0.2)
-    print("      [red]4. EXIT[/]")
+    print("      [red]5. EXIT[/]")
     time.sleep(0.2)
     print()
     print("[green]==================================================[/]")
@@ -70,6 +70,7 @@ def validate_card_and_pin(userData):
     """Validate the card and PIN entered by the user."""
     attempts = 0
     while attempts < 3:
+        time.sleep(0.2)
         inserted_card = input("\nPlease insert your CARD: ")
         if not inserted_card:
             print("\nPlease insert your card number.")
@@ -91,6 +92,7 @@ def validate_card_and_pin(userData):
 
     attempts = 0
     while attempts < 3:
+        time.sleep(0.2)
         inserted_pin = input("\nPlease enter PIN: ")
         if not inserted_pin:
             print("\n[cyan]Please enter PIN.[/]\n")
@@ -105,6 +107,7 @@ def validate_card_and_pin(userData):
 
         elif inserted_pin == user[0][3]:
             clear()
+            time.sleep(0.2)
             print("\n[green]Access allowed!![/]\n")
             return True
 
@@ -152,6 +155,7 @@ def deposit(userData):
         if UserData.get_cardNumber == holder_card[2]
     ] 
     while True:
+        time.sleep(0.2)
         input_deposit = input("\nHow much would you like to Deposit: € ")
         if not input_deposit:
             print("\n  [cyan]Please enter an amount to Deposit, try again.[/]\n")
@@ -159,6 +163,7 @@ def deposit(userData):
             try:
                 input_deposit = float(input_deposit)
                 if input_deposit <= 0:
+                    time.sleep(0.2)
                     print("\n[cyan]Deposit amount should be greater than 0.[/]")
                 else:
                     balance = show_balance(userData)  # Get the current balance
@@ -168,10 +173,11 @@ def deposit(userData):
                         new_balance = input_deposit + balance
                         current_user = user_data.find(list_of_users[0][2])
                         user_data.update_cell(current_user.row, 5, new_balance)
+                        time.sleep(0.2)
                         print("\n[green]Successfully deposited [blue]€ {:.2f}[/] to your account.[/]\n".format(input_deposit))
                         return True
                     else:
-                        print("\n[cyan]User not found.[/]\n")
+                        print("\n[cyan]User not found[/]\n")
                         return False
             except ValueError:
                 print("\n [cyan]Enter only numeric values for the deposit amount.[/]\n")
@@ -190,6 +196,7 @@ def withdraw(userData):
         if UserData.get_cardNumber == holder_card[2]
     ] 
     while True:
+        time.sleep(0.2)
         input_withdraw = input("\nHow much would you like to Withdraw: € ")
         if not input_withdraw:
             print("\n [cyan]Please enter an amount to withdraw, try again.[/]\n")
@@ -206,6 +213,7 @@ def withdraw(userData):
                         new_balance = balance - input_withdraw
                         current_user = user_data.find(list_of_users[0][2])
                         user_data.update_cell(current_user.row, 5, new_balance)
+                        time.sleep(0.2)
                         print("\n[green]Successfully withdrawed [blue]€ {:.2f}[/] from your account.[/]\n".format(input_withdraw))
                         return True
                     else:
@@ -228,6 +236,7 @@ def change_pin(userData):
         if UserData.get_cardNumber == holder_card[2]
     ] 
     while True:
+        time.sleep(0.2)
         new_pin = input("\nEnter a new 4-digit PIN: ")
         if new_pin.isdigit() and len(new_pin) == 4:
             current_user = user_data.find(list_of_users[0][2])
@@ -240,16 +249,51 @@ def change_pin(userData):
             
 
 def main():
+    """
+    A function that runs all the program functions
+    """
     welcome_message()
     current_user = validate_card_and_pin(list_of_users)
-    print(show_balance(current_user))
-    #print(show_user(current_user)
-    #deposit(current_user)
-    #withdraw(current_user)
-    change_pin(current_user)
-    display_menu()
-
-
-if __name__ == '__main__':
-    main()  
+    print("\nWelcome ", show_user(current_user), " :)\n")
+    option = 0
+    while True:
+        # calling the menu function 
+        display_menu()
+        try:
+            time.sleep(0.2)
+            option = int(input("Enter here your option:  "))
+            time.sleep(0.2)
+            print("[green]==================================================[/]")
+        except ValueError:
+            time.sleep(0.2)
+            print("\n    [red]Invalid input. Please try again.[/]\n")
+            continue  # Restart the loop if invalid input is given
+        if option == 1:
+            show_balance(current_user)
+            time.sleep(0.2)
+            print("\n [cyan]Your current balance is: € [/]", show_balance(current_user))
+            print("[green]==================================================[/]")
+        elif option == 2:
+            deposit(current_user)
+        elif option == 3:
+            withdraw(current_user)
+        elif option == 4:
+            change_pin(current_user)
+        elif option == 5:
+            time.sleep(0.2)
+            clear()
+            time.sleep(0.2)
+            print("[green]==================================================[/]")
+            time.sleep(0.2)
+            print("[red]You exit the ATM!![/]\n")
+            time.sleep(0.2)
+            print("[green]Have a nice day!![/]\n")
+            time.sleep(0.2)
+            print("[green]==================================================[/]")
+            time.sleep(0.2)
+            break     
+        else: 
+            print("\n [red]Invalid option. Please try again.[/]\n")
+        
+main()  
 

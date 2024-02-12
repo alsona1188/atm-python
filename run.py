@@ -1,6 +1,6 @@
 import gspread
 from google.oauth2.service_account import Credentials
-from userData import userData
+from userData import UserData
 from rich import print
 import time
 import datetime
@@ -66,7 +66,7 @@ def display_menu():
     time.sleep(0.2)
 
 
-def validate_card_and_pin(list_of_users):
+def validate_card_and_pin(userData):
     """Validate the card and PIN entered by the user."""
     attempts = 0
     while attempts < 3:
@@ -118,10 +118,26 @@ def validate_card_and_pin(list_of_users):
     sys.exit()
     return False
 
+def show_balance(userData):
+
+    """Check balance function
+    """
+    userData = UserData
+    user = [
+        holder_card
+        for holder_card in list_of_users
+        if UserData.get_cardNumber == holder_card[2]
+    ] 
+    return list_of_users[0][4]   
+
 
 def main():
     welcome_message()
-    validate_card_and_pin(list_of_users)
+    current_user = validate_card_and_pin(list_of_users)
+    #print(show_balance(current_user))
     display_menu()
-   
-main()
+
+
+if __name__ == '__main__':
+    main()  
+

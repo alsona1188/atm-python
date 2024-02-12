@@ -1,6 +1,6 @@
-class userData:
+class UserData():
     """
-    userData class contains 5 attributes
+    UserData class contains 5 attributes
     """
     def __init__(self, firstname, lastname, cardNumber, pin, balance):
         self.firstname = firstname
@@ -10,7 +10,7 @@ class userData:
         self.balance = balance
     
     def __str__(self):
-        return f"cardHolder({self.cardNum}, {self.pin}, {self.firstname}, {self.lastname}, {self.balance})"
+        return f"cardHolder({self.firstname}, {self.lastname}, {self.card_number}, {self.pin}, {self.balance})"
  
     # Getter methods
 

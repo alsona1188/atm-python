@@ -78,7 +78,6 @@ def validate_card_and_pin(list_of_users):
         user = [holder_card for holder_card in list_of_users if inserted_card == holder_card[2]]
         if user:
             time.sleep(0.3)
-            #print("\n[green]Your card is correct[/]\n")
             break
         else:
             print("\n[red]Your card number doesn't exist![/]")
@@ -99,7 +98,9 @@ def validate_card_and_pin(list_of_users):
             continue
 
         elif not inserted_pin.isnumeric():
+            clear()
             print("\n[cyan]Only numbers allowed. Insert your card and try again.[/]\n")
+            sys.exit()
             return False
 
         elif inserted_pin == user[0][3]:
@@ -118,17 +119,9 @@ def validate_card_and_pin(list_of_users):
     return False
 
 
-
 def main():
     welcome_message()
-    #card_number = get_card_number()
-    #pin = get_pin()
     validate_card_and_pin(list_of_users)
-    #current_user = validate_card()
-    #validate_pin(current_user)
     display_menu()
-    #validate_card_and_pin(list_of_users)
-    
-    
-
+   
 main()

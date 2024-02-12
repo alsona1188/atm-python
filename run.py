@@ -57,6 +57,8 @@ def display_menu():
     time.sleep(0.2)
     print("      [blue]3. WITHDRAW[/]")
     time.sleep(0.2)
+    print("      [bright_magenta]3. Change PIN[/]")
+    time.sleep(0.2)
     print("      [red]4. EXIT[/]")
     time.sleep(0.2)
     print()
@@ -64,73 +66,68 @@ def display_menu():
     time.sleep(0.2)
 
 
-def validate_card():
-    """
-    Validating the card inserted by the user. If it is correct will break
-    otherwise it will continue to ask for card number.
-    """
-    while True:
-        inserted_card = input("\n Please insert your CARD:  ")
-        if not inserted_card:
-            print("\n Please insert your card number.")
-            continue
-            
-        user = [holder_card for holder_card in list_of_users if 
-                inserted_card == holder_card[2]]
-        if user:
-            time.sleep(0.3)
-            print("\n [green] Your card is correct[/]\n")
-            break
-        else:
-            print("\n [red] Your card number doesn't exist![/]")
-    return userData(user[0][0], user[0][1], user[0][2], user[0][3], user[0][4])
-    
-def validate_pin(userData):
-
-    """- Validating the pin entered by the user
-       - There is a limit of 3 attempts 
-       """
-    user = [
-        holder_card
-        for holder_card in list_of_users
-        if userData.get_cardNumber() == holder_card[2]
-    ]
-    
+def validate_card_and_pin(list_of_users):
+    """Validate the card and PIN entered by the user."""
     attempts = 0
     while attempts < 3:
-        attempts += 1
-        inserted_pin = input("\nPlease enter PIN:  \n")
+        inserted_card = input("\nPlease insert your CARD: ")
+        if not inserted_card:
+            print("\nPlease insert your card number.")
+            continue
+
+        user = [holder_card for holder_card in list_of_users if inserted_card == holder_card[2]]
+        if user:
+            time.sleep(0.3)
+            #print("\n[green]Your card is correct[/]\n")
+            break
+        else:
+            print("\n[red]Your card number doesn't exist![/]")
+            attempts += 1
+
+    if attempts == 3:
+        clear()
+        print("\n[red]Sorry you've exceeded your trial limit[/]\n")
+        sys.exit()
+        return False
+
+    attempts = 0
+    while attempts < 3:
+        inserted_pin = input("\nPlease enter PIN: ")
         if not inserted_pin:
-            print("\n    [cyan]Please enter PIN, try again.[/]\n")
-            status = False
+            print("\n[cyan]Please enter PIN, try again.[/]\n")
+            attempts += 1
+            continue
 
         elif not inserted_pin.isnumeric():
-            print("\n  [cyan]Only numbers allowed. Insert your card and try again.[/]\n")
-            status = False
-            sys.exit()
+            print("\n[cyan]Only numbers allowed. Insert your card and try again.[/]\n")
+            return False
 
-        elif inserted_pin.isnumeric() and inserted_pin == user[0][3]:
-            print("\n    [green]Correct PIN! Access allowed!![/]\n")
-            status = True
-            break
-
-        elif attempts == 3:
-            print("\n    [red]Sorry you've exceeded you trial limit[/]\n")
-            status = False
-            sys.exit()
+        elif inserted_pin == user[0][3]:
+            clear()
+            print("\n[green]Access allowed!![/]\n")
+            print("[cyan]Select one of the options to proceed.[/]")
+            return True
 
         else:
-            print("\n    [red]Incorrect PIN, try again.[/]\n")
-            status = False
-    return status
+            print("\n[red]Incorrect PIN, try again.[/]\n")
+            attempts += 1
+    clear()
+    print("\n[red]Sorry you've exceeded your trial limit[/]\n")
+    
+    sys.exit()
+    return False
 
 
 
 def main():
     welcome_message()
+    #card_number = get_card_number()
+    #pin = get_pin()
+    validate_card_and_pin(list_of_users)
+    #current_user = validate_card()
+    #validate_pin(current_user)
     display_menu()
-    current_user = validate_card()
-    validate_pin(current_user)
+    #validate_card_and_pin(list_of_users)
     
     
 

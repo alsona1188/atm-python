@@ -130,11 +130,21 @@ def show_balance(userData):
     ] 
     return list_of_users[0][4]   
 
+def show_user(userData):
+    userData = UserData
+    user = [
+        holder_card
+        for holder_card in list_of_users
+        if UserData.get_cardNumber == holder_card[2]
+    ] 
+    return list_of_users[0][0] 
+
 
 def main():
     welcome_message()
     current_user = validate_card_and_pin(list_of_users)
     #print(show_balance(current_user))
+    #print(show_user(current_user))
     display_menu()
 
 

@@ -48,6 +48,7 @@ def welcome_message():
 
 def display_menu():
     """ Print options to the user """
+    print("[cyan]Select one of the options to proceed.[/]\n")
     print("\n      [green]**__[/] [bright_magenta]MENU[/] [green]__**[/]")
     time.sleep(0.2)
     print("\n      [green]1. BALANCE[/]")
@@ -105,7 +106,6 @@ def validate_card_and_pin(userData):
         elif inserted_pin == user[0][3]:
             clear()
             print("\n[green]Access allowed!![/]\n")
-            print("[cyan]Select one of the options to proceed.[/]")
             return True
 
         else:
@@ -151,8 +151,6 @@ def deposit(userData):
         for holder_card in list_of_users
         if UserData.get_cardNumber == holder_card[2]
     ] 
-    #return list_of_users[0][2]   
-
     while True:
         input_deposit = input("\nHow much would you like to Deposit: € ")
         if not input_deposit:
@@ -170,7 +168,7 @@ def deposit(userData):
                         new_balance = input_deposit + balance
                         current_user = user_data.find(list_of_users[0][2])
                         user_data.update_cell(current_user.row, 5, new_balance)
-                        print("\nSuccessfully deposited € {:.2f} to your account.".format(input_deposit))
+                        print("\n[green]Successfully deposited [blue]€ {:.2f}[/] to your account.[/]\n".format(input_deposit))
                         return True
                     else:
                         print("\n[cyan]User not found.[/]\n")
@@ -178,12 +176,52 @@ def deposit(userData):
             except ValueError:
                 print("\n [cyan]Enter only numeric values for the deposit amount.[/]\n")
 
+def withdraw(userData):
+    """
+      - Creating the withdraw function 
+      - Validation of numeric
+      - Checking if the user has sufficient data
+      - Updating the balance  
+     """
+    userData = UserData
+    user = [
+        holder_card
+        for holder_card in list_of_users
+        if UserData.get_cardNumber == holder_card[2]
+    ] 
+    while True:
+        input_withdraw = input("\nHow much would you like to Withdraw: € ")
+        if not input_withdraw:
+            print("\n  [cyan]Please enter an amount to withdraw, try again.[/]\n")
+        else:
+            try:
+                input_withdraw = float(input_withdraw)
+                if input_withdraw <= 0:
+                    print("\n[cyan]Withdraw amount should be greater than 0.[/]")
+                else:
+                    balance = show_balance(userData)  # Get the current balance
+                    if balance is not None:
+                        # Convert balance to float
+                        balance = float(balance)
+                        new_balance = balance - input_withdraw
+                        current_user = user_data.find(list_of_users[0][2])
+                        user_data.update_cell(current_user.row, 5, new_balance)
+                        print("\n[green]Successfully withdrawed [blue]€ {:.2f}[/] from your account.[/]\n".format(input_withdraw))
+                        return True
+                    else:
+                        print("\n[cyan]User not found.[/]\n")
+                        return False
+            except ValueError:
+                print("\n [cyan]Enter only numeric values for the withdraw amount.[/]\n")
+
+
 def main():
     welcome_message()
     current_user = validate_card_and_pin(list_of_users)
     print(show_balance(current_user))
     #print(show_user(current_user)
     #deposit(current_user)
+    withdraw(current_user)
     display_menu()
 
 

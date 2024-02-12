@@ -8,7 +8,6 @@ import os
 import sys
 
 # This code is taken from Love Sandwiches Project
-
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive.file",
@@ -22,7 +21,7 @@ SHEET = GSPREAD_CLIENT.open('atm_python')
 
 user_data = SHEET.worksheet('data-user')
 #Prints a list of users by row
-list_of_users = user_data.get_all_values()[1:]
+list_of_users = user_data.get_all_values()[1:] # Creating a list of lists
 
 
 def clear():
@@ -131,6 +130,7 @@ def show_balance(userData):
     return list_of_users[0][4]   
 
 def show_user(userData):
+    """ Show the user name when this function is called """
     userData = UserData
     user = [
         holder_card
@@ -139,12 +139,51 @@ def show_user(userData):
     ] 
     return list_of_users[0][0] 
 
+def deposit(userData):
+    """ 
+      - Creating a function for the Deposit proccess
+      - Validation of numeric
+      - Updating the balance at the database 
+    """
+    userData = UserData
+    user = [
+        holder_card
+        for holder_card in list_of_users
+        if UserData.get_cardNumber == holder_card[2]
+    ] 
+    #return list_of_users[0][2]   
+
+    while True:
+        input_deposit = input("\nHow much would you like to Deposit: € ")
+        if not input_deposit:
+            print("\n  [cyan]Please enter an amount to Deposit, try again.[/]\n")
+        else:
+            try:
+                input_deposit = float(input_deposit)
+                if input_deposit <= 0:
+                    print("\n[cyan]Deposit amount should be greater than 0.[/]")
+                else:
+                    balance = show_balance(userData)  # Get the current balance
+                    if balance is not None:
+                        # Convert balance to float
+                        balance = float(balance)
+                        new_balance = input_deposit + balance
+                        current_user = user_data.find(list_of_users[0][2])
+                        user_data.update_cell(current_user.row, 5, new_balance)
+                        print("\nSuccessfully deposited € {:.2f} to your account.".format(input_deposit))
+                        return True
+                    else:
+                        print("\n[cyan]User not found.[/]\n")
+                        return False
+            except ValueError:
+                print("\n [cyan]Enter only numeric values for the deposit amount.[/]\n")
 
 def main():
     welcome_message()
     current_user = validate_card_and_pin(list_of_users)
-    #print(show_balance(current_user))
-    #print(show_user(current_user))
+    print(show_balance(current_user))
+    #print(show_user(current_user)
+    #deposit(current_user)
     display_menu()
 
 

@@ -8,9 +8,6 @@ class UserData():
         self.cardNumber = cardNumber
         self.pin = pin
         self.balance = balance
-    
-    def __str__(self):
-        return f"cardHolder({self.firstname}, {self.lastname}, {self.card_number}, {self.pin}, {self.balance})"
  
     # Getter methods
 

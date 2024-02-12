@@ -93,7 +93,7 @@ def validate_card_and_pin(userData):
     while attempts < 3:
         inserted_pin = input("\nPlease enter PIN: ")
         if not inserted_pin:
-            print("\n[cyan]Please enter PIN, try again.[/]\n")
+            print("\n[cyan]Please enter PIN.[/]\n")
             attempts += 1
             continue
 
@@ -192,7 +192,7 @@ def withdraw(userData):
     while True:
         input_withdraw = input("\nHow much would you like to Withdraw: € ")
         if not input_withdraw:
-            print("\n  [cyan]Please enter an amount to withdraw, try again.[/]\n")
+            print("\n [cyan]Please enter an amount to withdraw, try again.[/]\n")
         else:
             try:
                 input_withdraw = float(input_withdraw)
@@ -215,13 +215,38 @@ def withdraw(userData):
                 print("\n [cyan]Enter only numeric values for the withdraw amount.[/]\n")
 
 
+def change_pin(userData):
+    """
+      - Creating the pin function 
+      - Validation of numeric
+      - Updating pin on spreadsheet  
+     """
+    userData = UserData
+    user = [
+        holder_card
+        for holder_card in list_of_users
+        if UserData.get_cardNumber == holder_card[2]
+    ] 
+    while True:
+        new_pin = input("\nEnter a new 4-digit PIN: ")
+        if new_pin.isdigit() and len(new_pin) == 4:
+            current_user = user_data.find(list_of_users[0][2])
+            user_data.update_cell(current_user.row, 4, new_pin)
+            clear()
+            print("\n[green]PIN successfully changed.[/]\n")
+            break
+        else:
+            print("\n[red]Please enter a valid 4-digit PIN containing only digits.[/]\n")
+            
+
 def main():
     welcome_message()
     current_user = validate_card_and_pin(list_of_users)
     print(show_balance(current_user))
     #print(show_user(current_user)
     #deposit(current_user)
-    withdraw(current_user)
+    #withdraw(current_user)
+    change_pin(current_user)
     display_menu()
 
 

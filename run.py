@@ -7,7 +7,6 @@ import datetime
 import os
 import sys
 from rich.progress import track
-from time import sleep
 
 # This code is taken from Love Sandwiches Project
 SCOPE = [

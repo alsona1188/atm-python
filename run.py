@@ -21,19 +21,19 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('atm_python')
 
 user_data = SHEET.worksheet('data-user')
-#Prints a list of users by row
-list_of_users = user_data.get_all_values()[1:] # Creating a list of lists
+# Prints a list of users by row
+list_of_users = user_data.get_all_values()[1:]
 
 
 def clear():
-    """This function will clear the terminal screen based on the operating system. 
-       It checks the operating system and then executes the appropriate command
-       (cls for Windows and clear for Linux/Mac) using os.system()."""
+    """ This function will clear the terminal screen
+      based on the operating system."""
 
     if os.name == 'nt':
         os.system('cls')
     else:
         os.system('clear')
+
 
 def welcome_message():
     clear()
@@ -46,6 +46,7 @@ def welcome_message():
     time.sleep(0.2)
     print("[green]==================================================[/]")
     time.sleep(0.2)
+
 
 def display_menu():
     """ Print options to the user """
@@ -102,7 +103,7 @@ def validate_card_and_pin(userData):
 
         elif not inserted_pin.isnumeric():
             clear()
-            print("\n[cyan]Only numbers allowed. Insert your card and try again.[/]\n")
+            print("\n[cyan]Only numbers allowed.Try again.[/]\n")
             sys.exit()
             return False
 
@@ -117,16 +118,16 @@ def validate_card_and_pin(userData):
             attempts += 1
     clear()
     print("\n[red]Sorry you've exceeded your trial limit[/]\n")
-    
     sys.exit()
     return False
 
-# This code was taken from https://www.freecodecamp.org/news/use-the-rich-library-in-python/
+# This code was taken from 
+# https://www.freecodecamp.org/news/use-the-rich-library-in-python/
 # How to display a progress bar using rich
+
+
 def proccess_data():
     time.sleep(0.02)
-
-   
 
 
 def show_balance(userData):
@@ -137,9 +138,9 @@ def show_balance(userData):
     user = [
         holder_card
         for holder_card in list_of_users
-        if UserData.get_cardNumber == holder_card[2]
-    ] 
-    return list_of_users[0][4]   
+        if UserData.get_cardNumber == holder_card[2]] 
+    return list_of_users[0][4]  
+
 
 def show_user(userData):
     """ Show the user name when this function is called """
@@ -147,33 +148,30 @@ def show_user(userData):
     user = [
         holder_card
         for holder_card in list_of_users
-        if UserData.get_cardNumber == holder_card[2]
-    ] 
+        if UserData.get_cardNumber == holder_card[2]] 
     return list_of_users[0][0] 
 
+
 def deposit(userData):
-    """ 
-      - Creating a function for the Deposit proccess
+    """ - Creating a function for the Deposit proccess
       - Validation of numeric
-      - Updating the balance at the database 
-    """
+      - Updating the balance at the database """
     userData = UserData
     user = [
         holder_card
         for holder_card in list_of_users
-        if UserData.get_cardNumber == holder_card[2]
-    ] 
+        if UserData.get_cardNumber == holder_card[2]] 
     while True:
         time.sleep(0.2)
         input_deposit = input("\nHow much would you like to Deposit: € ")
         if not input_deposit:
-            print("\n  [cyan]Please enter an amount to Deposit, try again.[/]\n")
+            print("\n  [cyan]Please enter your Deposit, try again.[/]\n")
         else:
             try:
                 input_deposit = float(input_deposit)
                 if input_deposit <= 0:
                     time.sleep(0.2)
-                    print("\n[cyan]Deposit amount should be greater than 0.[/]")
+                    print("\n[cyan]Deposit amount should be greater than 0[/]")
                 else:
                     balance = show_balance(userData)  # Get the current balance
                     if balance is not None:
@@ -190,31 +188,28 @@ def deposit(userData):
                         print("\n[cyan]User not found[/]\n")
                         return False
             except ValueError:
-                print("\n [cyan]Enter only numeric values for the deposit amount.[/]\n")
+                print("\n [cyan]Enter only numeric values.[/]\n")
+
 
 def withdraw(userData):
-    """
-      - Creating the withdraw function 
-      - Validation of numeric
-      - Checking if the user has sufficient data
-      - Updating the balance  
-     """
+    """ - Creating the withdraw function, Validation of numeric
+    - Checking if the user has sufficient data
+    - Updating the balance """
     userData = UserData
     user = [
         holder_card
         for holder_card in list_of_users
-        if UserData.get_cardNumber == holder_card[2]
-    ] 
+        if UserData.get_cardNumber == holder_card[2]]
     while True:
         time.sleep(0.2)
         input_withdraw = input("\nHow much would you like to Withdraw: € ")
         if not input_withdraw:
-            print("\n [cyan]Please enter an amount to withdraw, try again.[/]\n")
+            print("\n [cyan]Please enter an amount to withdraw.[/]\n")
         else:
             try:
                 input_withdraw = float(input_withdraw)
                 if input_withdraw <= 0:
-                    print("\n[cyan]Withdraw amount should be greater than 0.[/]")
+                    print("\n[cyan]Withdraw amount must be greater than 0[/]")
                 else:
                     balance = show_balance(userData)  # Get the current balance
                     if balance is not None:
@@ -231,21 +226,15 @@ def withdraw(userData):
                         print("\n[cyan]User not found.[/]\n")
                         return False
             except ValueError:
-                print("\n [cyan]Enter only numeric values for the withdraw amount.[/]\n")
+                print("\n [cyan]Enter only numeric values.[/]\n")
 
 
 def change_pin(userData):
-    """
-      - Creating the pin function 
-      - Validation of numeric
-      - Updating pin on spreadsheet  
-     """
+    """ - Creating the pin function, Validation of numeric
+      - Updating pin on spreadsheet """
     userData = UserData
-    user = [
-        holder_card
-        for holder_card in list_of_users
-        if UserData.get_cardNumber == holder_card[2]
-    ] 
+    user = [holder_card for holder_card in list_of_users 
+            if UserData.get_cardNumber == holder_card[2]]
     while True:
         time.sleep(0.2)
         new_pin = input("\nEnter a new 4-digit PIN: ")
@@ -257,8 +246,8 @@ def change_pin(userData):
             print("\n[green]PIN successfully changed.[/]\n")
             break
         else:
-            print("\n[red]Please enter a valid 4-digit PIN containing only digits.[/]\n")
-            
+            print("\n[red]Please enter a valid 4-digit PIN.[/]\n")
+
 
 def main():
     """
@@ -269,12 +258,11 @@ def main():
     print("\nWelcome ", show_user(current_user), " :)\n")
     option = 0
     while True:
-        # calling the menu function 
         display_menu()
         try:
             option = int(input("Enter here your option:  "))
             time.sleep(0.2)
-            print("[green]==================================================[/]")
+            print("[green]===================================+=====[/]")
         except ValueError:
             time.sleep(0.2)
             print("\n    [red]Invalid input. Please try again.[/]\n")
@@ -285,7 +273,7 @@ def main():
             for _ in track(range(100), description='[green]Processing data'):
                 proccess_data()
             print("\n [cyan]Your current balance is: € [/]", show_balance(current_user))
-            print("[green]==================================================[/]")
+            print("[green]===========================================[/]")
         elif option == 2:
             time.sleep(0.2)
             clear()
@@ -302,17 +290,17 @@ def main():
             time.sleep(0.2)
             clear()
             time.sleep(0.2)
-            print("[green]==================================================[/]")
+            print("[green]=============================================[/]")
             time.sleep(0.2)
             print("[red]You exit the ATM!![/]\n")
             time.sleep(0.2)
             print("[green]Have a nice day!![/]\n")
             time.sleep(0.2)
-            print("[green]==================================================[/]")
+            print("[green]==============================================[/]")
             time.sleep(0.2)
             break     
         else: 
             print("\n [red]Invalid option. Please try again.[/]\n")
-        
-main()  
 
+
+main()

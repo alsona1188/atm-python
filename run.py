@@ -124,7 +124,7 @@ def validate_card_and_pin(userData):
 # This code was taken from https://www.freecodecamp.org/news/use-the-rich-library-in-python/
 # How to display a progress bar using rich
 def proccess_data():
-    sleep(0.02)
+    time.sleep(0.02)
 
    
 

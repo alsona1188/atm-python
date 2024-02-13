@@ -6,6 +6,8 @@ import time
 import datetime
 import os
 import sys
+from rich.progress import track
+from time import sleep
 
 # This code is taken from Love Sandwiches Project
 SCOPE = [
@@ -120,6 +122,14 @@ def validate_card_and_pin(userData):
     sys.exit()
     return False
 
+# This code was taken from https://www.freecodecamp.org/news/use-the-rich-library-in-python/
+# How to display a progress bar using rich
+def proccess_data():
+    sleep(0.02)
+
+   
+
+
 def show_balance(userData):
 
     """Check balance function
@@ -173,7 +183,8 @@ def deposit(userData):
                         new_balance = input_deposit + balance
                         current_user = user_data.find(list_of_users[0][2])
                         user_data.update_cell(current_user.row, 5, new_balance)
-                        time.sleep(0.2)
+                        for _ in track(range(100), description='[green]Processing data'):
+                            proccess_data()
                         print("\n[green]Successfully deposited [blue]€ {:.2f}[/] to your account.[/]\n".format(input_deposit))
                         return True
                     else:
@@ -213,7 +224,8 @@ def withdraw(userData):
                         new_balance = balance - input_withdraw
                         current_user = user_data.find(list_of_users[0][2])
                         user_data.update_cell(current_user.row, 5, new_balance)
-                        time.sleep(0.2)
+                        for _ in track(range(100), description='[green]Processing data'):
+                            proccess_data()
                         print("\n[green]Successfully withdrawed [blue]€ {:.2f}[/] from your account.[/]\n".format(input_withdraw))
                         return True
                     else:
@@ -241,7 +253,8 @@ def change_pin(userData):
         if new_pin.isdigit() and len(new_pin) == 4:
             current_user = user_data.find(list_of_users[0][2])
             user_data.update_cell(current_user.row, 4, new_pin)
-            clear()
+            for _ in track(range(100), description='[green]Processing data'):
+                proccess_data()
             print("\n[green]PIN successfully changed.[/]\n")
             break
         else:
@@ -260,7 +273,6 @@ def main():
         # calling the menu function 
         display_menu()
         try:
-            time.sleep(0.2)
             option = int(input("Enter here your option:  "))
             time.sleep(0.2)
             print("[green]==================================================[/]")
@@ -269,15 +281,23 @@ def main():
             print("\n    [red]Invalid input. Please try again.[/]\n")
             continue  # Restart the loop if invalid input is given
         if option == 1:
+            clear()
             show_balance(current_user)
-            time.sleep(0.2)
+            for _ in track(range(100), description='[green]Processing data'):
+                proccess_data()
             print("\n [cyan]Your current balance is: € [/]", show_balance(current_user))
             print("[green]==================================================[/]")
         elif option == 2:
+            time.sleep(0.2)
+            clear()
             deposit(current_user)
         elif option == 3:
+            time.sleep(0.2)
+            clear()
             withdraw(current_user)
         elif option == 4:
+            time.sleep(0.2)
+            clear()
             change_pin(current_user)
         elif option == 5:
             time.sleep(0.2)

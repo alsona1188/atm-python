@@ -135,11 +135,14 @@ def show_balance(userData):
     """Check balance function
     """
     userData = UserData
+    user_data = SHEET.worksheet('data-user')
+    list_of_users = user_data.get_all_values()[1:]
     user = [
         holder_card
         for holder_card in list_of_users
         if UserData.get_cardNumber == holder_card[2]] 
-    return list_of_users[0][4]  
+    
+    return list_of_users[0][4] 
 
 
 def show_user(userData):

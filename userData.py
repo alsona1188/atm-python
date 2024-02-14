@@ -42,15 +42,3 @@ class UserData():
 
     def set_balance(self, newValue):
         self.balance = newValue
-
-
-    def print_user_data(self):
-        """ This function will print out all the details for this object """
-        print("The data are:")
-        print("**-------------------------------------------------**")
-        print("Firstname: ", self.firstname)
-        print("Lastname: ", self.lastname)
-        print("Card number: ", self.card_number)
-        print("Pin: ", self.pin)
-        print("Balance: ", self.balance)
-

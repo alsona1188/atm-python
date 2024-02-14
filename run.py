@@ -199,7 +199,7 @@ def deposit(userData):
                         user_data.update_cell(current_user.row, 5, new_balance)
                         for _ in track(range(100), description='[green]Processing data'):
                             proccess_data()
-                        print("\n[green]Successfully deposited [blue]€ {:.2f}[/] to your account.[/]\n".format(input_deposit))
+                        print("\n[green]Successfully deposited [blue]€ {:.2f}[/].[/]\n".format(input_deposit))
                         return True
                     else:
                         print("\n[cyan]User not found[/]\n")

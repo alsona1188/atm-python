@@ -151,8 +151,6 @@ def show_user(userData):
         holder_card
         for holder_card in list_of_users
         if UserData.get_cardNumber == holder_card[2]] 
-    current_user = user_data.find(list_of_users[0][2])
-    user_data.update_cell(current_user.row, 5, new_balance)
     return list_of_users[0][0] 
 
 

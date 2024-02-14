@@ -122,8 +122,7 @@ def validate_card_and_pin(userData):
     print("\n[red]Sorry you've exceeded your trial limit[/]\n")
     sys.exit()
     return False
-
-# This code was taken from 
+# This code was taken from
 # https://www.freecodecamp.org/news/use-the-rich-library-in-python/
 # How to display a progress bar using rich
 
@@ -141,9 +140,7 @@ def show_balance(userData):
     list_of_users = user_data.get_all_values()[1:]
     user = [
         holder_card
-        for holder_card in list_of_users
-        if UserData.get_cardNumber == holder_card[2]] 
-    
+        for holder_card in list_of_users if UserData.get_cardNumber == holder_card[2]]
     return list_of_users[0][4]
 
 
@@ -154,8 +151,7 @@ def show_pin(userData):
     user = [
         holder_card
         for holder_card in list_of_users
-        if UserData.get_cardNumber == holder_card[2]] 
-    
+        if UserData.get_cardNumber == holder_card[2]]
     return list_of_users[0][3]
 
 
@@ -164,9 +160,8 @@ def show_user(userData):
     userData = UserData
     user = [
         holder_card
-        for holder_card in list_of_users
-        if UserData.get_cardNumber == holder_card[2]] 
-    return list_of_users[0][0] 
+        for holder_card in list_of_users if UserData.get_cardNumber == holder_card[2]]
+    return list_of_users[0][0]
 
 
 def deposit(userData):
@@ -176,8 +171,7 @@ def deposit(userData):
     userData = UserData
     user = [
         holder_card
-        for holder_card in list_of_users
-        if UserData.get_cardNumber == holder_card[2]] 
+        for holder_card in list_of_users if UserData.get_cardNumber == holder_card[2]]
     while True:
         time.sleep(0.2)
         input_deposit = input("\nHow much would you like to Deposit: € ")
@@ -240,7 +234,7 @@ def withdraw(userData):
                             user_data.update_cell(current_user.row, 5, new_balance)
                             for _ in track(range(100), description='[green]Processing data'):
                                 proccess_data()
-                            print("\n[green]Successfully withdrew [blue]€ {:.2f}[/].[/]\n".format(input_withdraw))
+                            print("\n[green]Succesfully withdrew [blue]€ {:.2f}[/].[/]\n".format(input_withdraw))
                             return True
                     else:
                         print("\n[cyan]User not found.[/]\n")
@@ -253,8 +247,7 @@ def change_pin(userData):
     """ - Creating the pin function, Validation of numeric
       - Updating pin on spreadsheet """
     userData = UserData
-    user = [holder_card for holder_card in list_of_users 
-            if UserData.get_cardNumber == holder_card[2]]
+    user = [holder_card for holder_card in list_of_users if UserData.get_cardNumber == holder_card[2]]
     while True:
         time.sleep(0.2)
         new_pin = input("\nEnter a new 4-digit PIN: ")
@@ -325,8 +318,8 @@ def main():
             time.sleep(0.2)
             print("[green]==============================================[/]")
             time.sleep(0.2)
-            break     
-        else: 
+            break
+        else:
             print("\n [red]Invalid option. Please try again.[/]\n")
 
 

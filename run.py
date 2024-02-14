@@ -139,8 +139,6 @@ def show_balance(userData):
         holder_card
         for holder_card in list_of_users
         if UserData.get_cardNumber == holder_card[2]] 
-        
-        
     return list_of_users[0][4]  
 
 
@@ -224,14 +222,15 @@ def withdraw(userData):
                             current_user = user_data.find(list_of_users[0][2])
                             user_data.update_cell(current_user.row, 5, new_balance)
                             for _ in track(range(100), description='[green]Processing data'):
-                               proccess_data()
-                            print("\n[green]Successfully withdrew [blue]€ {:.2f}[/] from your account.[/]\n".format(input_withdraw))
+                                proccess_data()
+                            print("\n[green]Successfully withdrew [blue]€ {:.2f}[/].[/]\n".format(input_withdraw))
                             return True
                     else:
                         print("\n[cyan]User not found.[/]\n")
                         return False
             except ValueError:
                 print("\n[cyan]Enter only numeric values.[/]\n")
+
 
 def change_pin(userData):
     """ - Creating the pin function, Validation of numeric
@@ -276,7 +275,7 @@ def main():
             show_balance(current_user)
             for _ in track(range(100), description='[green]Processing data'):
                 proccess_data()
-            print("\n [cyan]Your current balance is: € [/]", show_balance(current_user))
+            print("\n [cyan]Your balance is: € [/]", show_balance(current_user))
             print("[green]===========================================[/]")
         elif option == 2:
             time.sleep(0.2)

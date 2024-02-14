@@ -217,19 +217,21 @@ def withdraw(userData):
                     if balance is not None:
                         # Convert balance to float
                         balance = float(balance)
-                        new_balance = balance - input_withdraw
-                        current_user = user_data.find(list_of_users[0][2])
-                        user_data.update_cell(current_user.row, 5, new_balance)
-                        for _ in track(range(100), description='[green]Processing data'):
-                            proccess_data()
-                        print("\n[green]Successfully withdrawed [blue]€ {:.2f}[/] from your account.[/]\n".format(input_withdraw))
-                        return True
+                        if input_withdraw > balance:
+                            print("\n[cyan]Withdrawal amount exceeds your balance.[/]")
+                        else:
+                            new_balance = balance - input_withdraw
+                            current_user = user_data.find(list_of_users[0][2])
+                            user_data.update_cell(current_user.row, 5, new_balance)
+                            for _ in track(range(100), description='[green]Processing data'):
+                               proccess_data()
+                            print("\n[green]Successfully withdrew [blue]€ {:.2f}[/] from your account.[/]\n".format(input_withdraw))
+                            return True
                     else:
                         print("\n[cyan]User not found.[/]\n")
                         return False
             except ValueError:
-                print("\n [cyan]Enter only numeric values.[/]\n")
-
+                print("\n[cyan]Enter only numeric values.[/]\n")
 
 def change_pin(userData):
     """ - Creating the pin function, Validation of numeric

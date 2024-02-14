@@ -61,7 +61,9 @@ def display_menu():
     time.sleep(0.2)
     print("      [bright_magenta]4. Change PIN[/]")
     time.sleep(0.2)
-    print("      [red]5. EXIT[/]")
+    print("      [bright_magenta]5. Show PIN[/]")
+    time.sleep(0.2)
+    print("      [red]6. EXIT[/]")
     time.sleep(0.2)
     print()
     print("[green]==================================================[/]")
@@ -142,7 +144,19 @@ def show_balance(userData):
         for holder_card in list_of_users
         if UserData.get_cardNumber == holder_card[2]] 
     
-    return list_of_users[0][4] 
+    return list_of_users[0][4]
+
+
+def show_pin(userData):
+    userData = UserData
+    user_data = SHEET.worksheet('data-user')
+    list_of_users = user_data.get_all_values()[1:]
+    user = [
+        holder_card
+        for holder_card in list_of_users
+        if UserData.get_cardNumber == holder_card[2]] 
+    
+    return list_of_users[0][3]
 
 
 def show_user(userData):
@@ -293,6 +307,13 @@ def main():
             clear()
             change_pin(current_user)
         elif option == 5:
+            clear()
+            show_pin(current_user)
+            for _ in track(range(100), description='[green]Processing data'):
+                proccess_data()
+            print("\n [cyan]Your PIN is: € [/]", show_pin(current_user))
+            print("[green]===========================================[/]")
+        elif option == 6:
             time.sleep(0.2)
             clear()
             time.sleep(0.2)

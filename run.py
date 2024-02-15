@@ -36,6 +36,7 @@ def clear():
 
 
 def welcome_message():
+    """ Print welcome message at the begining"""
     clear()
     now = datetime.datetime.now()
     print(now.strftime("      [cyan]%A       %Y-%m-%d  %H:%M:%S[/]"))
@@ -145,6 +146,7 @@ def show_balance(userData):
 
 
 def show_pin(userData):
+    """ Shows the pin of the current user """
     userData = UserData
     user_data = SHEET.worksheet('data-user')
     list_of_users = user_data.get_all_values()[1:]

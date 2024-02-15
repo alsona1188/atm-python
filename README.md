@@ -145,7 +145,7 @@ A well-designed flowchart for an ATM software project helps developers, testers,
 
 ## Data Model
 
-1.Google Sheets:
+Google Sheets:
 
 Google Sheets is used as a data storage and management tool. It allows for organized data storage and retrieval of the user details, like firstname, lastname, Card Number, Pin and Balance.
 

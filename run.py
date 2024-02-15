@@ -163,7 +163,7 @@ def show_user(userData):
     user = [
         holder_card
         for holder_card in list_of_users if UserData.get_cardNumber == holder_card[2]]
-    return list_of_users[0][0]
+    return list_of_users[0][1]
 
 
 def deposit(userData):

@@ -160,10 +160,12 @@ def show_pin(userData):
 def show_user(userData):
     """ Show the user name when this function is called """
     userData = UserData
+    user_data = SHEET.worksheet('data-user')
+    list_of_users = user_data.get_all_values()[1:]
     user = [
         holder_card
         for holder_card in list_of_users if UserData.get_cardNumber == holder_card[2]]
-    return list_of_users[0][1]
+    return list_of_users[0][0]
 
 
 def deposit(userData):

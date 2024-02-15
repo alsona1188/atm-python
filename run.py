@@ -21,14 +21,14 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('atm_python')
 
 user_data = SHEET.worksheet('data-user')
-# Prints a list of users by row
+# Prints a list of users by row without headings
 list_of_users = user_data.get_all_values()[1:]
 
 
 def clear():
     """ This function will clear the terminal screen
       based on the operating system."""
-
+# This code was taken from stack overflow
     if os.name == 'nt':
         os.system('cls')
     else:

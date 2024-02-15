@@ -175,11 +175,38 @@ The Result is given below.
 
   3. I had also a bug where i had to convert the input_deposit and input_withdraw to float. 
 
-  4. When I was deploying the App I had also problems with the libraries. I found out that i had to update the rich library to the last version and that the track used on the progress bar was part of the rich library. 
+  4. When I was deploying the App I had also problems with the libraries. I found out that i had to update the rich library to the last version. 
 
   5. During deployment a secon error happened with the sleep used on the progress bar,I fixed that by changing sleep(0.02) to time.sleep(0.02)
 
 - Unsolved Bugs: I can mention only the code longer than 79 characters appearing at the CI python linter.
+
+## Technologies Used
+
+The following is a list of the technologies I used on this project.
+
+1. Python: is the primary programming language used to develop the ATM software. It is a versatile language known for its simplicity and readability.
+
+2. Google Cloud: provides the necessary APIs for various functions within the project.
+
+3. GitHub
+
+4. Gitpod and CodeAnywhere: Integrated development environment (IDE) for coding and managing the project. It offers a range of developer tools and extensions to aid in code writing and debugging.
+
+5. Flowchart was made using Lucidchart website. 
+
+Each of these technologies plays a specific role in the project's development and execution, contributing to the successful operation of the ATM software system.
+
+
+## Imported Libraries and Packages Used
+
+- [rich](https://pypi.org/project/rich/#description) The Rich API makes it easy to add color and style to terminal output.
+- [os](https://docs.python.org/3/library/os.html)  library is utilized to implement a clear_screen function. This function enhances the user experience by clearing the terminal screen, reducing clutter, and making interactions more straightforward.
+- [sys](https://docs.python.org/3/library/sys.html) is used to control the output behavior of the program. Specifically, it is used to print text letter by letter, creating a typewriter-like effect that can enhance user engagement.
+- [gspread](https://docs.gspread.org/en/v5.7.0/) facilitates the connection between the program and Google Sheets. It enables reading and updating data on a Google Sheets document, making it an effective tool for managing and syncing data.
+- [datetime](https://docs.python.org/3/library/datetime.html#module-datetime) The datetime module supplies classes for manipulating dates and times.
+- [time](https://docs.python.org/3/library/time.h) This module provides various time-related functions
+
 
 ## Heroku Deployment
 
@@ -194,16 +221,33 @@ Deployment steps are as follows, after account setup:
 - Link the `Heroku app` to `Repository` 
 - Click on `Deploy`. 
 
-### Clone the Repository Code Locally
+## Clone the Repository Code Locally
 - Navigate to the GitHub Repository you want to clone to use locally:
   - Click on the code drop down button
   - Click on HTTPS
   - Copy the repository link to the clipboard
-  - Open your IDE of choice (git must be installed for the next steps)
+  - Open your IDE of choice
   - Type git clone copied-git-url into the IDE terminal
-  - The project will now of been cloned on your local machine for use.
+  - The project will now be cloned on your local machine for use.
 
-  
+## Credits 
+
+Here we credit everywhere we have got content for the website and any code that was taken from other sources.
+
+### Code 
+
+- The code for clearing the terminal was got from [stack overflow](https://stackoverflow.com/questions/2084508/clear-the-terminal-in-python)
+- The code for progress bar effect was got from [freeCodeCamp](https://www.freecodecamp.org/news/use-the-rich-library-in-python/)
+- The code for connecting to google sheets was got from [Code Institute](https://learn.codeinstitute.net/courses/course-v1:CodeInstitute+LS101+2021_T1/courseware/293ee9d8ff3542d3b877137ed81b9a5b/071036790a5642f9a6f004f9888b6a45/)
+- [Youtube tutorial](https://www.youtube.com/watch?v=PkfhcduvAOE)
+- Code Institute for the deployment material. 
+- [Gspread: Automate Google sheet with Python](https://medium.com/hacktive-devs/gspread-automate-google-sheet-with-python-dc1fa7c65c21)
+
+
+
+
+
+
 
 
 

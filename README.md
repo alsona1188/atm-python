@@ -242,8 +242,19 @@ Here we credit everywhere we have got content for the website and any code that 
 - [Youtube tutorial](https://www.youtube.com/watch?v=PkfhcduvAOE)
 - Code Institute for the deployment material. 
 - [Gspread: Automate Google sheet with Python](https://medium.com/hacktive-devs/gspread-automate-google-sheet-with-python-dc1fa7c65c21)
+- An idea of PIN validation from [stack overflow](https://stackoverflow.com/questions/38168266/simple-pin-validation)
 
+## Acknowledgements
 
+I would like to acknowledge the following people who have been a huge help for this project:
+
+-  [Precious Ijege](https://www.linkedin.com/in/precious-ijege-908a00168/) - My Code Institute Mentor for his advices and expertise.
+
+- The Slack community of Code Institute for their help and support.
+
+Alsona Natsi 2024.
+
+[Back to top](<#contents>)
 
 
 

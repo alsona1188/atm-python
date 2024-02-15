@@ -152,6 +152,63 @@ Google Sheets is used as a data storage and management tool. It allows for organ
 Here is the link of the spreadsheet:
 [atm-python](https://docs.google.com/spreadsheets/d/1LVCX2QFLkQlBhcHl-c_47eY1clq3Ybq8vf8vXKG5wV8/edit?usp=sharing)
 
+## Testing
+
+ - Python Validation
+
+I validated my file using [Code Institute's Python Linter](https://pep8ci.herokuapp.com/) and was met with no errors. There are only notification about the long code more than 79 charachters. 
+
+The Result is given below.
+
+![Python Linter Test Result](document/python_linter.png)
+
+- I have manually tested the project by giving invalid inputs, such as strings when numbers are expected, or giving input withdraw greater than the balance. Pin was tested as well, when you enter a new pin, should be 4 digit. 
+- Tested in my local terminal and on my personal heroku terminal. 
+
+## Bugs
+
+- Solved Bugs
+  
+  1. When I wrote the project I noticed that i did not add the condition that the withdraw amount should be less than the balance amount. Fixed it by adding the right code.
+
+  2. Another problem that I faced during writing of the code was that I was not able to update the balance after doing a withdraw or deposit. I fixed that by adding the user_data and the list_of_users inside the show_balance function.
+
+  3. I had also a bug where i had to convert the input_deposit and input_withdraw to float. 
+
+  4. When I was deploying the App I had also problems with the libraries. I found out that i had to update the rich library to the last version and that the track used on the progress bar was part of the rich library. 
+
+  5. During deployment a secon error happened with the sleep used on the progress bar,I fixed that by changing sleep(0.02) to time.sleep(0.02)
+
+- Unsolved Bugs: I can mention only the code longer than 79 characters appearing at the CI python linter.
+
+## Heroku Deployment
+
+Deployment steps are as follows, after account setup:
+
+- Select *New* in the top-right corner of your Heroku Dashboard, and select *Create new app* from the dropdown menu.
+- Your app name must be unique, and then choose a region closest to you (EU or USA), and finally, select *Create App*.
+- From the new app *Settings*, click *Reveal Config Vars*, and set the value of KEY to `PORT`, and the value to `8000` then select *add*.
+- Also we have to add the credentials file to *Reveal Config Vars* and set the key to CREDS and the value to the credentials file. 
+- Further down, to support dependencies, select *Add Buildpack*.
+- The order of the buildpacks is important, select `Python` first, then `Node.js` second. (if they are not in this order, you can drag them to rearrange them)
+- Link the `Heroku app` to `Repository` 
+- Click on `Deploy`. 
+
+### Clone the Repository Code Locally
+- Navigate to the GitHub Repository you want to clone to use locally:
+  - Click on the code drop down button
+  - Click on HTTPS
+  - Copy the repository link to the clipboard
+  - Open your IDE of choice (git must be installed for the next steps)
+  - Type git clone copied-git-url into the IDE terminal
+  - The project will now of been cloned on your local machine for use.
+
+  
+
+
+
+
+
 
 
 

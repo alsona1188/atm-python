@@ -20,6 +20,7 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open("user_database")
 
+
 def clear():
     """ This function will clear the terminal screen
       based on the operating system."""
@@ -67,7 +68,9 @@ def display_menu():
 
 
 def validate_card():
-    """Card number validation of the user, showing errors if the card is not inserted or not valid
+    """
+    Card number validation of the user,showing errors 
+    if the card is not inserted or not valid
     """
     list_of_users = SHEET.worksheet("user").get_all_values()[1:]
     while True:
@@ -126,6 +129,7 @@ def validate_user(cardUser):
             status = False
     return status
 
+
 def show_balance(cardUser):
     """Check balance function
     """
@@ -137,8 +141,12 @@ def show_balance(cardUser):
     ]
     return user[0][4]
 
+
 def show_user_name(cardUser):
-    list_of_users= SHEET.worksheet("user").get_all_values()[1:]
+    """
+    The fuction that shows the user name
+    """
+    list_of_users = SHEET.worksheet("user").get_all_values()[1:]
     user = [
         holder
         for holder in list_of_users
@@ -146,8 +154,12 @@ def show_user_name(cardUser):
     ]
     return user[0][2]
 
+
 def show_pin(cardUser):
-    list_of_users= SHEET.worksheet("user").get_all_values()[1:]
+    """
+    The function that shows the pin of the user
+    """
+    list_of_users = SHEET.worksheet("user").get_all_values()[1:]
     user = [
         holder
         for holder in list_of_users
@@ -155,10 +167,11 @@ def show_pin(cardUser):
     ]
     return user[0][1]
 
+
 def change_pin(cardUser):
     """ - Creating the pin function, Validation of numeric
       - Updating pin on spreadsheet """
-    list_of_users= SHEET.worksheet("user").get_all_values()[1:]
+    list_of_users = SHEET.worksheet("user").get_all_values()[1:]
     user = [
         holder
         for holder in list_of_users
@@ -179,6 +192,7 @@ def change_pin(cardUser):
         else:
             print("\n[red]Please enter a valid 4-digit PIN.[/]\n")
     return True
+
 
 def deposit(cardUser):
     # Deposit menu function and validation of numeric
@@ -202,9 +216,10 @@ def deposit(cardUser):
             cardUser.set_balance(new_balance)
             cur_user = SHEET.worksheet("user").find(user[0][0])
             SHEET.worksheet("user").update_cell(cur_user.row, 5, new_balance)
-            print("\n[green]Successfully deposited to your account.[/]")
+            print("\n[green]Successfully deposited to your account.[/]\n")
             break
     return True
+
 
 def withdraw(cardUser):
     """ - Creating a function for the Deposit proccess
@@ -249,7 +264,7 @@ def main():
     validate_user(current_user)
     clear()
     for _ in track(range(100), description='[green]Processing data'):
-                proccess_data()
+        proccess_data()
     print("\nWelcome ", show_user_name(current_user), " :)\n")
     option = 0
     while True:
@@ -286,7 +301,7 @@ def main():
             show_pin(current_user)
             for _ in track(range(100), description='[green]Processing data'):
                 proccess_data()
-            print("\n [cyan]Your PIN is: € [/]", show_pin(current_user))
+            print("\n [cyan]Your PIN is:  [/]", show_pin(current_user))
             print("[green]===========================================[/]")
         elif option == 6:
             time.sleep(0.2)

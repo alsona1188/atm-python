@@ -1,6 +1,6 @@
 import gspread
 from google.oauth2.service_account import Credentials
-from userData import UserData
+from cardUser import cardUser
 from rich import print
 import time
 import datetime
@@ -12,18 +12,13 @@ from rich.progress import track
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive.file",
-    "https://www.googleapis.com/auth/drive"
-    ]
+    "https://www.googleapis.com/auth/drive",
+]
 
-CREDS = Credentials.from_service_account_file('creds.json')
+CREDS = Credentials.from_service_account_file("creds.json")
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
-SHEET = GSPREAD_CLIENT.open('atm_python')
-
-user_data = SHEET.worksheet('data-user')
-# Prints a list of users by row without headings
-list_of_users = user_data.get_all_values()[1:]
-
+SHEET = GSPREAD_CLIENT.open("user_database")
 
 def clear():
     """ This function will clear the terminal screen
@@ -71,199 +66,178 @@ def display_menu():
     time.sleep(0.2)
 
 
-def validate_card_and_pin(userData):
-    """Validate the card and PIN entered by the user."""
-    attempts = 0
-    while attempts < 3:
+def validate_card():
+    """Card number validation of the user, showing errors if the card is not inserted or not valid
+    """
+    list_of_users = SHEET.worksheet("user").get_all_values()[1:]
+    while True:
         time.sleep(0.2)
         inserted_card = input("\nPlease insert your CARD: ")
-        if not inserted_card:
-            print("\nPlease insert your card number.")
-            continue
-
-        user = [holder_card for holder_card in list_of_users if inserted_card == holder_card[2]]
-        if user:
-            time.sleep(0.3)
+        user = [holder for holder in list_of_users if inserted_card == holder[0]]
+        if inserted_card and len(user) > 0:
             break
+        elif not inserted_card:
+            time.sleep(0.2)
+            print("\nPlease insert your card number.")
         else:
+            time.sleep(0.2)
             print("\n[red]Your card number doesn't exist![/]")
-            attempts += 1
+    return cardUser(user[0][0], user[0][1], user[0][2], user[0][3], user[0][4])
 
-    if attempts == 3:
-        clear()
-        print("\n[red]Sorry you've exceeded your trial limit[/]\n")
-        sys.exit()
-        return False
 
+def proccess_data():
+    """ This code was taken from
+        https://www.freecodecamp.org/news/use-the-rich-library-in-python/
+        How to display a progress bar using rich"""
+    time.sleep(0.02)
+
+
+def validate_user(cardUser):
+    # Pin code number validation
+    list_of_users = SHEET.worksheet("user").get_all_values()[1:]
+    user = [
+        holder
+        for holder in list_of_users
+        if cardUser.get_cardNum() == holder[0]
+    ]
     attempts = 0
     while attempts < 3:
+        attempts += 1
         time.sleep(0.2)
         inserted_pin = input("\nPlease enter PIN: ")
         if not inserted_pin:
             print("\n[cyan]Please enter PIN.[/]\n")
-            attempts += 1
-            continue
-
+            status = False
         elif not inserted_pin.isnumeric():
             clear()
             print("\n[cyan]Only numbers allowed.Try again.[/]\n")
             sys.exit()
-            return False
-
-        elif inserted_pin == user[0][3]:
-            clear()
+        elif inserted_pin.isnumeric() and inserted_pin == user[0][1]:
+            status = True
+            break
+        elif attempts == 3:
             time.sleep(0.2)
-            print("\n[green]Access allowed!![/]\n")
-            return True
-
+            clear()
+            print("\n[red]Sorry you've exceeded your trial limit[/]\n")
+            status = False
+            sys.exit()
         else:
             print("\n[red]Incorrect PIN, try again.[/]\n")
-            attempts += 1
-    clear()
-    print("\n[red]Sorry you've exceeded your trial limit[/]\n")
-    sys.exit()
-    return False
-# This code was taken from
-# https://www.freecodecamp.org/news/use-the-rich-library-in-python/
-# How to display a progress bar using rich
+            status = False
+    return status
 
-
-def proccess_data():
-    time.sleep(0.02)
-
-
-def show_balance(userData):
-
+def show_balance(cardUser):
     """Check balance function
     """
-    userData = UserData
-    user_data = SHEET.worksheet('data-user')
-    list_of_users = user_data.get_all_values()[1:]
+    list_of_users = SHEET.worksheet("user").get_all_values()[1:]
     user = [
-        holder_card
-        for holder_card in list_of_users if UserData.get_cardNumber == holder_card[2]]
-    return list_of_users[0][4]
+        holder
+        for holder in list_of_users
+        if cardUser.get_cardNum() == holder[0]
+    ]
+    return user[0][4]
 
-
-def show_pin(userData):
-    """ Shows the pin of the current user """
-    userData = UserData
-    user_data = SHEET.worksheet('data-user')
-    list_of_users = user_data.get_all_values()[1:]
+def show_user_name(cardUser):
+    list_of_users= SHEET.worksheet("user").get_all_values()[1:]
     user = [
-        holder_card
-        for holder_card in list_of_users
-        if UserData.get_cardNumber == holder_card[2]]
-    return list_of_users[0][3]
+        holder
+        for holder in list_of_users
+        if cardUser.get_cardNum() == holder[0]
+    ]
+    return user[0][2]
 
-
-def show_user(userData):
-    """ Show the user name when this function is called """
-    userData = UserData
-    user_data = SHEET.worksheet('data-user')
-    list_of_users = user_data.get_all_values()[1:]
+def show_pin(cardUser):
+    list_of_users= SHEET.worksheet("user").get_all_values()[1:]
     user = [
-        holder_card
-        for holder_card in list_of_users if UserData.get_cardNumber == holder_card[2]]
-    return list_of_users[0][0]
+        holder
+        for holder in list_of_users
+        if cardUser.get_cardNum() == holder[0]
+    ]
+    return user[0][1]
 
-
-def deposit(userData):
-    """ - Creating a function for the Deposit proccess
-      - Validation of numeric
-      - Updating the balance at the database """
-    userData = UserData
-    user = [
-        holder_card
-        for holder_card in list_of_users if UserData.get_cardNumber == holder_card[2]]
-    while True:
-        time.sleep(0.2)
-        input_deposit = input("\nHow much would you like to Deposit: € ")
-        if not input_deposit:
-            print("\n  [cyan]Please enter your Deposit, try again.[/]\n")
-        else:
-            try:
-                input_deposit = float(input_deposit)
-                if input_deposit <= 0:
-                    time.sleep(0.2)
-                    print("\n[cyan]Deposit amount should be greater than 0[/]")
-                else:
-                    balance = show_balance(userData)  # Get the current balance
-                    if balance is not None:
-                        # Convert balance to float
-                        balance = float(balance)
-                        new_balance = input_deposit + balance
-                        current_user = user_data.find(list_of_users[0][2])
-                        user_data.update_cell(current_user.row, 5, new_balance)
-                        for _ in track(range(100), description='[green]Processing data'):
-                            proccess_data()
-                        print("\n[green]Successfully deposited [blue]€ {:.2f}[/].[/]\n".format(input_deposit))
-                        return True
-                    else:
-                        print("\n[cyan]User not found[/]\n")
-                        return False
-            except ValueError:
-                print("\n [cyan]Enter only numeric values.[/]\n")
-
-
-def withdraw(userData):
-    """ - Creating the withdraw function, Validation of numeric
-    - Checking if the user has sufficient data
-    - Updating the balance """
-    userData = UserData
-    user = [
-        holder_card
-        for holder_card in list_of_users
-        if UserData.get_cardNumber == holder_card[2]]
-    while True:
-        time.sleep(0.2)
-        input_withdraw = input("\nHow much would you like to Withdraw: € ")
-        if not input_withdraw:
-            print("\n [cyan]Please enter an amount to withdraw.[/]\n")
-        else:
-            try:
-                input_withdraw = float(input_withdraw)
-                if input_withdraw <= 0:
-                    print("\n[cyan]Withdraw amount must be greater than 0[/]")
-                else:
-                    balance = show_balance(userData)  # Get the current balance
-                    if balance is not None:
-                        # Convert balance to float
-                        balance = float(balance)
-                        if input_withdraw > balance:
-                            print("\n[cyan]Withdrawal amount exceeds your balance.[/]")
-                        else:
-                            new_balance = balance - input_withdraw
-                            current_user = user_data.find(list_of_users[0][2])
-                            user_data.update_cell(current_user.row, 5, new_balance)
-                            for _ in track(range(100), description='[green]Processing data'):
-                                proccess_data()
-                            print("\n[green]Succesfully withdrew [blue]€ {:.2f}[/].[/]\n".format(input_withdraw))
-                            return True
-                    else:
-                        print("\n[cyan]User not found.[/]\n")
-                        return False
-            except ValueError:
-                print("\n[cyan]Enter only numeric values.[/]\n")
-
-
-def change_pin(userData):
+def change_pin(cardUser):
     """ - Creating the pin function, Validation of numeric
       - Updating pin on spreadsheet """
-    userData = UserData
-    user = [holder_card for holder_card in list_of_users if UserData.get_cardNumber == holder_card[2]]
+    list_of_users= SHEET.worksheet("user").get_all_values()[1:]
+    user = [
+        holder
+        for holder in list_of_users
+        if cardUser.get_cardNum() == holder[0]
+    ]
     while True:
         time.sleep(0.2)
         new_pin = input("\nEnter a new 4-digit PIN: ")
         if new_pin.isdigit() and len(new_pin) == 4:
-            current_user = user_data.find(list_of_users[0][2])
-            user_data.update_cell(current_user.row, 4, new_pin)
+            status = True
+            cardUser.set_pin(new_pin)
+            current_user = SHEET.worksheet("user").find(user[0][0])
+            SHEET.worksheet("user").update_cell(current_user.row, 2, new_pin)
             for _ in track(range(100), description='[green]Processing data'):
                 proccess_data()
             print("\n[green]PIN successfully changed.[/]\n")
             break
         else:
             print("\n[red]Please enter a valid 4-digit PIN.[/]\n")
+    return True
+
+def deposit(cardUser):
+    # Deposit menu function and validation of numeric
+    list_of_users = SHEET.worksheet("user").get_all_values()[1:]
+    user = [
+        holder
+        for holder in list_of_users
+        if cardUser.get_cardNum() == holder[0]
+    ]
+    while True:
+        input_deposit = input("\nHow much would you like to deposit: € ")
+        if not input_deposit:
+            print("\n[cyan]Please enter an amount, try again.[/]")
+            status = False
+        elif not input_deposit.isnumeric():
+            print("\n[cyan]Enter only amount in figures.[/]")
+            status = False
+        else:
+            status = True
+            new_balance = float(cardUser.get_balance()) + float(input_deposit)
+            cardUser.set_balance(new_balance)
+            cur_user = SHEET.worksheet("user").find(user[0][0])
+            SHEET.worksheet("user").update_cell(cur_user.row, 5, new_balance)
+            print("\n[green]Successfully deposited to your account.[/]")
+            break
+    return True
+
+def withdraw(cardUser):
+    """ - Creating a function for the Deposit proccess
+      - Validation of numeric
+      - Updating the balance at the database """
+
+    list_of_users = SHEET.worksheet("user").get_all_values()[1:]
+    user = [
+        holder
+        for holder in list_of_users
+        if cardUser.get_cardNum() == holder[0]
+    ]
+    while True:
+        time.sleep(0.2)
+        input_withdraw = input("\nHow much would you like to withdraw: € ")
+        if not input_withdraw:
+            print("\n [cyan]Please enter an amount to withdraw.[/]\n")
+            status = False
+        elif not input_withdraw.isnumeric():
+            print("\nEnter only amount in figures.")
+            status = False
+        elif float(cardUser.get_balance()) < float(input_withdraw):
+            print("\n[red]Insufficient balance. Try again.[/]")
+            status = False
+        else:
+            status = True
+            new_balance = float(cardUser.get_balance()) - float(input_withdraw)
+            cardUser.set_balance(new_balance)
+            current_user = SHEET.worksheet("user").find(user[0][0])
+            SHEET.worksheet("user").update_cell(current_user.row, 5, new_balance)
+            print("\n[green]Successfully withdraw![/]\n")
+            break
+    return True
 
 
 def main():
@@ -271,8 +245,12 @@ def main():
     A function that runs all the program functions
     """
     welcome_message()
-    current_user = validate_card_and_pin(list_of_users)
-    print("\nWelcome ", show_user(current_user), " :)\n")
+    current_user = validate_card()
+    validate_user(current_user)
+    clear()
+    for _ in track(range(100), description='[green]Processing data'):
+                proccess_data()
+    print("\nWelcome ", show_user_name(current_user), " :)\n")
     option = 0
     while True:
         display_menu()

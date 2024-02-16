@@ -69,11 +69,11 @@ A well-designed flowchart for an ATM software project helps developers, testers,
 
 ![Wrong PIN](document/wrong_pin.png)
 
-- If the user enter 3 times wrong card or pin number than the system will log out and the user will be exiting the atm. 
+- If the user enter 3 times wrong pin number than the system will log out and the user will be exiting the atm. 
 
 ![Exceeded limit](document/exceeded_limit.png)
 
-- If the user enters the correct card number and PIN than a menu will display wit all the functionalities that the ATM is offering. A welcoming message will apear with the name of the customer. 
+- If the user enters the correct card number and PIN than a menu will display with all the functionalities that the ATM is offering. A welcoming message will apear with the name of the customer. 
 
 ![Menu](document/menu.png)
 
@@ -90,7 +90,6 @@ A well-designed flowchart for an ATM software project helps developers, testers,
 
  - Here there there are some errors that will display to the user. 
   1. The user must enter a value
-  2. The amount should be greater than 0
   3. The value should be numeric. 
 
 ![Error deposit](document/error_deposit.png)
@@ -105,11 +104,10 @@ A well-designed flowchart for an ATM software project helps developers, testers,
 
  - Here there there are some errors that will display to the user. 
   1. The user must enter a value
-  2. The amount should be greater than 0
   3. The value should be numeric. 
   4. The amount should be less or equal to the balance
 
-![Errors withdraw](document/errors_withdraw.png)
+![Errors withdraw](document/errors_withdraw1.png)
 
 - if the user enters a valid amount for withdraw, Than it will show the progress bar and also the message that the withdraw was successfully updated. When we enter a withdraw value than automatically the balance will be updated. 
 
@@ -151,6 +149,8 @@ Google Sheets is used as a data storage and management tool. It allows for organ
 
 Here is the link of the spreadsheet:
 [atm-python](https://docs.google.com/spreadsheets/d/1LVCX2QFLkQlBhcHl-c_47eY1clq3Ybq8vf8vXKG5wV8/edit?usp=sharing)
+
+![Database Screenshot](document/user_database_screenshot.png)
 
 ## Testing
 
